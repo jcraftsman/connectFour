@@ -1,3 +1,6 @@
+package cartesianDistance;
+
+import cartesianDistance.Point;
 import org.junit.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;

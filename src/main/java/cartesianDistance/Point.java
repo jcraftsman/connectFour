@@ -1,3 +1,5 @@
+package cartesianDistance;
+
 import static java.lang.Math.pow;
 import static java.lang.Math.sqrt;
 
