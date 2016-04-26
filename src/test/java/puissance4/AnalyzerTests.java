@@ -4,15 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static puissance4.CellState.EMPTY_CELL;
-import static puissance4.CellState.RED_TOKEN;
-import static puissance4.CellState.YELLOW_TOKEN;
-
-
-// Sait si un joueur a gagné: 4 jetons alignés horizontal
-// Sait si un joueur a gagné: 4 jetons alignés vertical
-// Sait si un joueur a gagné: 4 jetons alignés diagonale
-// Sait si une partie est nulle
+import static puissance4.CellState.*;
 
 public class AnalyzerTests {
 

@@ -25,13 +25,13 @@ public class Analyzer {
     }
 
     public boolean isDraw() {
-        for(int rowIndex = 0; rowIndex < Grid.COLUMN_SIZE; rowIndex++) {
+        for (int rowIndex = 0; rowIndex < Grid.COLUMN_SIZE; rowIndex++) {
             for (int columnIndex = 0; columnIndex < Grid.COLUMNS_NUMBER; columnIndex++) {
-                if(grid.get(columnIndex, rowIndex) == EMPTY_CELL)
+                if (grid.get(columnIndex, rowIndex) == EMPTY_CELL)
                     return false;
             }
         }
-        return whoIsTheWinner()== EMPTY_CELL;
+        return whoIsTheWinner() == EMPTY_CELL;
     }
 
     private Stream<List<CellState>> allConnectedCells() {

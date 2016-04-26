@@ -11,8 +11,8 @@ import static puissance4.CellState.*;
 
 public class GridTest {
 
-    public static final int GRID_MAX_COLUMNS = 7;
-    public static final int GRID_MAX_ROWS = 6;
+    private static final int GRID_MAX_COLUMNS = 7;
+    private static final int GRID_MAX_ROWS = 6;
     private Grid grid;
 
     @Before
@@ -23,8 +23,6 @@ public class GridTest {
 
     @Test
     public void get_should_always_return_empty_cell_when_grid_is_empty() {
-        //Given
-
         //When
         CellState cell = grid.get(0, 0);
 
