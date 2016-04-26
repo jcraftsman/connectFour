@@ -3,34 +3,31 @@ package puissance4;
 import java.util.ArrayList;
 import java.util.List;
 
+import static puissance4.CellState.EMPTY_CELL;
+
 public class Grid {
 
-    public static final char EMPTY_CELL = '.';
-    public static final char RED_TOKEN = '0';
-    public static final char YELLOW_TOKEN = '*';
-    private static final int COLUMNS_SIZE = 7;
-    private static final int ROWS_SIZE = 6;
-
-    private char lastPlayedToken = EMPTY_CELL;
-    private List<List<Character>> grid;
+    public static final int COLUMNS_NUMBER = 7;
+    public static final int COLUMN_SIZE = 6;
+    private List<List<CellState>> grid;
 
     public Grid() {
         initGrid();
     }
 
-    public char get(int column, int row) {
-        if (containsToken(column, row)) {
-            return this.grid.get(column).get(row);
+    public CellState get(int columnIndex, int rowIndex) {
+        if (isEmpty(columnIndex, rowIndex)) {
+            return EMPTY_CELL;
         }
-        return EMPTY_CELL;
+        return column(columnIndex).get(rowIndex);
     }
 
-    public void put(int column) {
-        if (grid.get(column).size() >= ROWS_SIZE) {
+    public void put(int columnIndex, CellState token) {
+        List<CellState> column = column(columnIndex);
+        if (isFull(column)) {
             throw new IndexOutOfBoundsException();
         }
-        alternateToken();
-        this.grid.get(column).add(lastPlayedToken);
+        column.add(token);
     }
 
     public void empty() {
@@ -40,36 +37,105 @@ public class Grid {
     @Override
     public String toString() {
         StringBuilder prettyGridBuilder = new StringBuilder();
-        for (int rowIndex = ROWS_SIZE - 1; rowIndex >= 0; rowIndex--) {
-            appendRows(prettyGridBuilder, rowIndex);
-        }
+        appendColumns(prettyGridBuilder);
         return prettyGridBuilder.toString();
     }
 
-    private void appendRows(StringBuilder prettyGridBuilder, int row) {
-        for (int column = 0; column < COLUMNS_SIZE; column++) {
-            prettyGridBuilder.append(get(column, row));
+    private void appendColumns(StringBuilder prettyGridBuilder) {
+        for (int cellIndex = COLUMN_SIZE - 1; cellIndex >= 0; cellIndex--) {
+            appendCells(prettyGridBuilder, cellIndex);
+        }
+    }
+
+    private void appendCells(StringBuilder prettyGridBuilder, int rowIndex) {
+        for (int column = 0; column < COLUMNS_NUMBER; column++) {
+            prettyGridBuilder.append(printCell(rowIndex, column));
         }
         prettyGridBuilder.append("\n");
     }
 
-    private void alternateToken() {
-        lastPlayedToken = lastPlayedToken == RED_TOKEN ? YELLOW_TOKEN : RED_TOKEN;
+    private char printCell(int rowIndex, int column) {
+        CellState cellState = get(column, rowIndex);
+        return cellState.print();
     }
 
-    private boolean containsToken(int column, int row) {
-        if (row > ROWS_SIZE) {
+    private boolean isEmpty(int columnIndex, int rowIndex) {
+        checkRow(rowIndex);
+        int numberOfTokensInTheColumn = column(columnIndex).size();
+        return numberOfTokensInTheColumn <= rowIndex;
+    }
+
+    private List<CellState> column(int columnIndex) {
+        return this.grid.get(columnIndex);
+    }
+
+    private void checkRow(int rowIndex) {
+        if (rowIndex >= COLUMN_SIZE) {
             throw new IndexOutOfBoundsException();
         }
-        return this.grid.get(column).size() > row;
     }
 
     private void initGrid() {
-        grid = new ArrayList<List<Character>>(COLUMNS_SIZE);
-        for (int column = 0; column < COLUMNS_SIZE; column++) {
-            grid.add(new ArrayList<Character>(ROWS_SIZE));
+        grid = new ArrayList<>();
+        for (int column = 0; column < COLUMNS_NUMBER; column++) {
+            grid.add(new ArrayList<>());
         }
     }
 
+    private boolean isFull(List<CellState> column) {
+        return column.size() == COLUMN_SIZE;
+    }
 
+    public List<List<CellState>> columns() {
+        return this.grid;
+    }
+
+    public List<List<CellState>> rows() {
+        List<List<CellState>> rows = new ArrayList<>();
+        for (int rowIndex = 0; rowIndex < COLUMN_SIZE; rowIndex++) {
+            ArrayList<CellState> newRow = extractRow(rowIndex);
+            rows.add(newRow);
+        }
+        return rows;
+    }
+
+    private ArrayList<CellState> extractRow(int rowIndex) {
+        ArrayList<CellState> newRow = new ArrayList<>();
+        for (int columnIndex = 0; columnIndex < COLUMNS_NUMBER; columnIndex++) {
+            newRow.add(get(columnIndex, rowIndex));
+        }
+        return newRow;
+    }
+
+    public List<List<CellState>> diagonals() {
+
+        List<List<CellState>> diagonalLists = diagonals(Direction.RIGHT);
+        diagonalLists.addAll(diagonals(Direction.LEFT));
+        return diagonalLists;
+    }
+
+    private List<List<CellState>> diagonals(Direction direction) {
+        List<List<CellState>> diagonalLists = new ArrayList<>();
+        for (int rowIndex = 1 - COLUMN_SIZE; rowIndex < COLUMN_SIZE; rowIndex++) {
+            List<CellState> oneDiagonal = new ArrayList<>();
+            for (int offSet = 0; offSet <= COLUMN_SIZE; offSet++) {
+                int currenCellRowIndex = rowIndex + offSet;
+                if (currenCellRowIndex < COLUMN_SIZE && currenCellRowIndex >= 0) {
+                    int currentColumnIndex = getCurrentColumnIndex(direction, offSet);
+                    oneDiagonal.add(get(currentColumnIndex, currenCellRowIndex));
+                }
+            }
+            diagonalLists.add(oneDiagonal);
+        }
+        return diagonalLists;
+    }
+
+    private int getCurrentColumnIndex(Direction direction, int offSet) {
+        return direction == Direction.LEFT ? COLUMNS_NUMBER - 1 - offSet : offSet;
+    }
+
+    private enum Direction {
+        LEFT,
+        RIGHT
+    }
 }
