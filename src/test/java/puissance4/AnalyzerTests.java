@@ -92,7 +92,7 @@ public class AnalyzerTests {
         CellState winner = analyzer.whoIsTheWinner();
 
         //Then
-        assertThat(winner).isEqualTo(EMPTY_CELL);
+        assertThat(winner).isEqualTo(NONE);
     }
 
     @Test
@@ -105,7 +105,7 @@ public class AnalyzerTests {
         CellState winner = analyzer.whoIsTheWinner();
 
         //Then
-        assertThat(winner).isEqualTo(EMPTY_CELL);
+        assertThat(winner).isEqualTo(NONE);
     }
 
     @Test

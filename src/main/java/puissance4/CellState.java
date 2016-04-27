@@ -3,7 +3,7 @@ package puissance4;
 public enum CellState {
     RED_TOKEN('0'),
     YELLOW_TOKEN('*'),
-    EMPTY_CELL('.');
+    NONE('.');
 
     private char symbol;
 

@@ -1,9 +1,10 @@
 package puissance4;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static puissance4.CellState.EMPTY_CELL;
+import static puissance4.CellState.NONE;
 
 public class Analyzer {
 
@@ -15,7 +16,6 @@ public class Analyzer {
     }
 
     public CellState whoIsTheWinner() {
-
         Stream<List<CellState>> connectedCells = allConnectedCells();
         CellState columnWinner = connectedCells
                 .map(this::winnerInAList)
@@ -27,15 +27,16 @@ public class Analyzer {
     public boolean isDraw() {
         for (int rowIndex = 0; rowIndex < Grid.COLUMN_SIZE; rowIndex++) {
             for (int columnIndex = 0; columnIndex < Grid.COLUMNS_NUMBER; columnIndex++) {
-                if (grid.get(columnIndex, rowIndex) == EMPTY_CELL)
+                if (grid.get(columnIndex, rowIndex) == NONE)
                     return false;
             }
         }
-        return whoIsTheWinner() == EMPTY_CELL;
+        return whoIsTheWinner() == NONE;
     }
 
     private Stream<List<CellState>> allConnectedCells() {
-        List<List<CellState>> lists = grid.columns();
+        List<List<CellState>> lists = new ArrayList<>();
+        lists.addAll(grid.columns());
         lists.addAll(grid.rows());
         lists.addAll(grid.diagonals());
         return lists.stream();
@@ -43,8 +44,7 @@ public class Analyzer {
 
     private CellState winnerInAList(List<CellState> cellStates) {
         int points = 1;
-        CellState previousState = EMPTY_CELL;
-
+        CellState previousState = NONE;
         for (CellState cellState : cellStates) {
             if (cellState == previousState) {
                 points++;
@@ -56,7 +56,7 @@ public class Analyzer {
             }
             previousState = cellState;
         }
-        return EMPTY_CELL;
+        return NONE;
     }
 
     private boolean validWinner(CellState columnWinner) {

@@ -3,7 +3,7 @@ package puissance4;
 import java.util.ArrayList;
 import java.util.List;
 
-import static puissance4.CellState.EMPTY_CELL;
+import static puissance4.CellState.NONE;
 
 public class Grid {
 
@@ -17,7 +17,7 @@ public class Grid {
 
     public CellState get(int columnIndex, int rowIndex) {
         if (isEmpty(columnIndex, rowIndex)) {
-            return EMPTY_CELL;
+            return NONE;
         }
         return column(columnIndex).get(rowIndex);
     }
@@ -34,22 +34,43 @@ public class Grid {
         initGrid();
     }
 
-    @Override
-    public String toString() {
+    public List<List<CellState>> columns() {
+        return this.grid;
+    }
+
+    public List<List<CellState>> rows() {
+        List<List<CellState>> rows = new ArrayList<>();
+        for (int rowIndex = 0; rowIndex < COLUMN_SIZE; rowIndex++) {
+            List<CellState> newRow = extractRow(rowIndex);
+            rows.add(newRow);
+        }
+        return rows;
+    }
+
+    public List<List<CellState>> diagonals() {
+
+        List<List<CellState>> diagonalLists = diagonals(Direction.RIGHT);
+        diagonalLists.addAll(diagonals(Direction.LEFT));
+        return diagonalLists;
+    }
+
+    public String prettyPrint() {
         StringBuilder prettyGridBuilder = new StringBuilder();
         appendColumns(prettyGridBuilder);
         return prettyGridBuilder.toString();
     }
 
     private void appendColumns(StringBuilder prettyGridBuilder) {
+        prettyGridBuilder.append("\n");
         for (int cellIndex = COLUMN_SIZE - 1; cellIndex >= 0; cellIndex--) {
             appendCells(prettyGridBuilder, cellIndex);
         }
     }
 
     private void appendCells(StringBuilder prettyGridBuilder, int rowIndex) {
+        prettyGridBuilder.append(" ");
         for (int column = 0; column < COLUMNS_NUMBER; column++) {
-            prettyGridBuilder.append(printCell(rowIndex, column));
+            prettyGridBuilder.append(printCell(rowIndex, column)).append(" ");
         }
         prettyGridBuilder.append("\n");
     }
@@ -86,32 +107,12 @@ public class Grid {
         return column.size() == COLUMN_SIZE;
     }
 
-    public List<List<CellState>> columns() {
-        return this.grid;
-    }
-
-    public List<List<CellState>> rows() {
-        List<List<CellState>> rows = new ArrayList<>();
-        for (int rowIndex = 0; rowIndex < COLUMN_SIZE; rowIndex++) {
-            ArrayList<CellState> newRow = extractRow(rowIndex);
-            rows.add(newRow);
-        }
-        return rows;
-    }
-
-    private ArrayList<CellState> extractRow(int rowIndex) {
-        ArrayList<CellState> newRow = new ArrayList<>();
+    private List<CellState> extractRow(int rowIndex) {
+        List<CellState> newRow = new ArrayList<>();
         for (int columnIndex = 0; columnIndex < COLUMNS_NUMBER; columnIndex++) {
             newRow.add(get(columnIndex, rowIndex));
         }
         return newRow;
-    }
-
-    public List<List<CellState>> diagonals() {
-
-        List<List<CellState>> diagonalLists = diagonals(Direction.RIGHT);
-        diagonalLists.addAll(diagonals(Direction.LEFT));
-        return diagonalLists;
     }
 
     private List<List<CellState>> diagonals(Direction direction) {

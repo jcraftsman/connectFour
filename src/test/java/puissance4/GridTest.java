@@ -27,7 +27,7 @@ public class GridTest {
         CellState cell = grid.get(0, 0);
 
         //Then
-        assertThat(cell).isEqualTo(EMPTY_CELL);
+        assertThat(cell).isEqualTo(NONE);
     }
 
     @Test
@@ -110,14 +110,14 @@ public class GridTest {
         //Then
         for (int column = 0; column < GRID_MAX_COLUMNS; column++) {
             for (int row = 0; row < GRID_MAX_ROWS; row++) {
-                assertThat(grid.get(column, row)).isEqualTo(EMPTY_CELL);
+                assertThat(grid.get(column, row)).isEqualTo(NONE);
 
             }
         }
     }
 
     @Test
-    public void toString_should_print_all_rows_in_the_grid() {
+    public void tprettyPrint_should_print_all_rows_in_the_grid() {
         //Given
         grid.put(1, RED_TOKEN);
         grid.put(2, YELLOW_TOKEN);
@@ -125,20 +125,21 @@ public class GridTest {
         grid.put(3, YELLOW_TOKEN);
 
         //When
-        String stringGrid = grid.toString();
+        String stringGrid = grid.prettyPrint();
 
         //Then
-        String prettyGrid = ".......\n" +
-                ".......\n" +
-                ".......\n" +
-                ".......\n" +
-                "..0....\n" +
-                ".0**...\n";
+        String prettyGrid ="\n"+
+                " . . . . . . . \n" +
+                " . . . . . . . \n" +
+                " . . . . . . . \n" +
+                " . . . . . . . \n" +
+                " . . 0 . . . . \n" +
+                " . 0 * * . . . \n";
         assertThat(stringGrid).isEqualTo(prettyGrid);
     }
 
     @Test
-    public void toString_should_print_all_rows_in_the_gridwith_another_grid() {
+    public void prettyPrint_should_print_all_rows_in_the_gridwith_another_grid() {
         //Given
         grid.put(1, RED_TOKEN);
         grid.put(2, YELLOW_TOKEN);
@@ -148,15 +149,16 @@ public class GridTest {
 
 
         //When
-        String stringGrid = grid.toString();
+        String stringGrid = grid.prettyPrint();
 
         //Then
-        String prettyGrid = ".......\n" +
-                ".......\n" +
-                ".......\n" +
-                ".......\n" +
-                "..00...\n" +
-                ".0**...\n";
+        String prettyGrid = "\n"+
+                " . . . . . . . \n" +
+                " . . . . . . . \n" +
+                " . . . . . . . \n" +
+                " . . . . . . . \n" +
+                " . . 0 0 . . . \n" +
+                " . 0 * * . . . \n";
         assertThat(stringGrid).isEqualTo(prettyGrid);
     }
 
@@ -192,7 +194,7 @@ public class GridTest {
         List<List<CellState>> rows = grid.rows();
 
         //Then
-        assertThat(rows.get(0)).containsOnly(RED_TOKEN, YELLOW_TOKEN, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL);
+        assertThat(rows.get(0)).containsOnly(RED_TOKEN, YELLOW_TOKEN, NONE, NONE, NONE, NONE);
     }
 
 
@@ -205,7 +207,7 @@ public class GridTest {
         grid.put(2, RED_TOKEN);
         grid.put(2, RED_TOKEN);
         grid.put(2, YELLOW_TOKEN);
-        List<CellState> topLeftCornerDiagonal = Arrays.asList(YELLOW_TOKEN, YELLOW_TOKEN, YELLOW_TOKEN, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL);
+        List<CellState> topLeftCornerDiagonal = Arrays.asList(YELLOW_TOKEN, YELLOW_TOKEN, YELLOW_TOKEN, NONE, NONE, NONE);
 
         //When
         List<List<CellState>> diagonals = grid.diagonals();
@@ -223,7 +225,7 @@ public class GridTest {
         grid.put(3, RED_TOKEN);
         grid.put(3, RED_TOKEN);
         grid.put(3, YELLOW_TOKEN);
-        List<CellState> topLeftCornerDiagonal = Arrays.asList(YELLOW_TOKEN, YELLOW_TOKEN, YELLOW_TOKEN, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL);
+        List<CellState> topLeftCornerDiagonal = Arrays.asList(YELLOW_TOKEN, YELLOW_TOKEN, YELLOW_TOKEN, NONE, NONE, NONE);
 
         //When
         List<List<CellState>> diagonals = grid.diagonals();

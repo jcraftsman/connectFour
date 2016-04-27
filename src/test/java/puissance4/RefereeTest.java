@@ -78,10 +78,7 @@ public class RefereeTest {
     @Test
     public void isFinished_should_return_true_when_there_is_a_win() {
         //Given
-        grid.put(0, CellState.RED_TOKEN);
-        grid.put(0, CellState.RED_TOKEN);
-        grid.put(0, CellState.RED_TOKEN);
-        grid.put(0, CellState.RED_TOKEN);
+        wins(CellState.RED_TOKEN);
 
         //When
         boolean finished = referee.isFinished();
@@ -93,16 +90,77 @@ public class RefereeTest {
     @Test
     public void theWinnerIs_should_return_YellowToken_when_he_wins() {
         //Given
-        grid.put(0, CellState.YELLOW_TOKEN);
-        grid.put(0, CellState.YELLOW_TOKEN);
-        grid.put(0, CellState.YELLOW_TOKEN);
-        grid.put(0, CellState.YELLOW_TOKEN);
+        wins(CellState.YELLOW_TOKEN);
 
         //When
         CellState theWinner = referee.theWinnerIs();
 
         //Then
         assertThat(theWinner).isEqualTo(YELLOW_TOKEN);
+    }
+
+    @Test
+    public void print_should_return_next_player_red_when_who_will_play_is_red_token() {
+        //Given
+        referee.play(0);
+
+        //When
+        String message = referee.print();
+
+        //Then
+        assertThat(message).isEqualTo("Rouge colonne [1-7] : ");
+    }
+
+    @Test
+    public void print_should_return_next_player_yellow_when_who_will_play_is_yellow_token() {
+        //When
+        String message = referee.print();
+
+        //Then
+        assertThat(message).isEqualTo("Jaune colonne [1-7] : ");
+    }
+
+    @Test
+    public void print_should_return_winner_red_when_red_wins() {
+        //Given
+        wins(RED_TOKEN);
+
+        //When
+        String message = referee.print();
+
+        //Then
+        assertThat(message).startsWith("Rouge gagne la partie, bravo :)");
+    }
+
+    @Test
+    public void print_should_return_winner_yellow_when_yellow_wins() {
+        //Given
+        wins(YELLOW_TOKEN);
+
+        //When
+        String message = referee.print();
+
+        //Then
+        assertThat(message).startsWith("Jaune gagne la partie, bravo :)");
+    }
+
+    @Test
+    public void print_should_return_draw_when_no_wins() {
+        //Given
+        draw();
+
+        //When
+        String message = referee.print();
+
+        //Then
+        assertThat(message).isEqualTo("Egalité : fin de partie");
+    }
+
+    private void wins(CellState redToken) {
+        grid.put(0, redToken);
+        grid.put(0, redToken);
+        grid.put(0, redToken);
+        grid.put(0, redToken);
     }
 
     private void draw() {
