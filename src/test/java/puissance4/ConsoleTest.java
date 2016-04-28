@@ -30,7 +30,7 @@ public class ConsoleTest {
         console.display(grid, referee);
 
         //Then
-        verify(grid).prettyPrint();
+        verify(grid).emojiPrint();
     }
 
     @Test

@@ -4,10 +4,9 @@ import static puissance4.CellState.*;
 
 public class Referee {
 
-    private static final String RED_NEXT_PLAYER_MSG = "Rouge colonne [1-7] : ";
-    private static final String YELLOW_NEXT_PLAYER_MSG = "Jaune colonne [1-7] : ";
+    private static final String NEXT_PLAYER_MSG = "colonne [1-7] : ";
     private static final String DRAW_MSG = "Egalité : fin de partie";
-    private static final String WIN_CONGRATS_MSG = "gagne la partie, bravo :) ";
+    private static final String WIN_CONGRATS_MSG = "gagne la partie, bravo :) \uD83C\uDFC6 \uD83C\uDFC6 \uD83C\uDFC6";
     private static final String YELLOW = "Jaune ";
     private static final String RED = "Rouge ";
 
@@ -48,10 +47,10 @@ public class Referee {
     }
 
     private String printNextPlayer() {
-        if (RED_TOKEN == this.whoWillPlay()) {
-            return RED_NEXT_PLAYER_MSG;
+        if (this.whoWillPlay() == RED_TOKEN) {
+            return RED + NEXT_PLAYER_MSG;
         } else {
-            return YELLOW_NEXT_PLAYER_MSG;
+            return YELLOW + NEXT_PLAYER_MSG;
         }
     }
 

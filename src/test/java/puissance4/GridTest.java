@@ -163,6 +163,30 @@ public class GridTest {
     }
 
     @Test
+    public void emojiPrint_should_print_all_rows_in_the_gridwith_another_grid() {
+        //Given
+        grid.put(1, RED_TOKEN);
+        grid.put(2, YELLOW_TOKEN);
+        grid.put(2, RED_TOKEN);
+        grid.put(3, YELLOW_TOKEN);
+        grid.put(3, RED_TOKEN);
+
+
+        //When
+        String stringGrid = grid.emojiPrint();
+
+        //Then
+        String prettyGrid = "\n"+
+                " \uD83D\uDD18 \uD83D\uDD18 \uD83D\uDD18 \uD83D\uDD18 \uD83D\uDD18 \uD83D\uDD18 \uD83D\uDD18 \n" +
+                " \uD83D\uDD18 \uD83D\uDD18 \uD83D\uDD18 \uD83D\uDD18 \uD83D\uDD18 \uD83D\uDD18 \uD83D\uDD18 \n" +
+                " \uD83D\uDD18 \uD83D\uDD18 \uD83D\uDD18 \uD83D\uDD18 \uD83D\uDD18 \uD83D\uDD18 \uD83D\uDD18 \n" +
+                " \uD83D\uDD18 \uD83D\uDD18 \uD83D\uDD18 \uD83D\uDD18 \uD83D\uDD18 \uD83D\uDD18 \uD83D\uDD18 \n" +
+                " \uD83D\uDD18 \uD83D\uDD18 \uD83D\uDD34 \uD83D\uDD34 \uD83D\uDD18 \uD83D\uDD18 \uD83D\uDD18 \n" +
+                " \uD83D\uDD18 \uD83D\uDD34 \uD83C\uDFBE \uD83C\uDFBE \uD83D\uDD18 \uD83D\uDD18 \uD83D\uDD18 \n";
+        assertThat(stringGrid).isEqualTo(prettyGrid);
+    }
+
+    @Test
     public void columns_should_return_an_array_of_cells() {
         //When
         List<List<CellState>> columns = grid.columns();

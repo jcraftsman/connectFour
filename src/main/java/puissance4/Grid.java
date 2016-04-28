@@ -55,29 +55,37 @@ public class Grid {
     }
 
     public String prettyPrint() {
+        return print(false);
+    }
+
+    public String emojiPrint() {
+        return print(true);
+    }
+
+    private String print(boolean useEmoji) {
         StringBuilder prettyGridBuilder = new StringBuilder();
-        appendColumns(prettyGridBuilder);
+        appendColumns(prettyGridBuilder, useEmoji);
         return prettyGridBuilder.toString();
     }
 
-    private void appendColumns(StringBuilder prettyGridBuilder) {
+    private void appendColumns(StringBuilder prettyGridBuilder, boolean useEmoji) {
         prettyGridBuilder.append("\n");
         for (int cellIndex = COLUMN_SIZE - 1; cellIndex >= 0; cellIndex--) {
-            appendCells(prettyGridBuilder, cellIndex);
+            appendCells(prettyGridBuilder, cellIndex, useEmoji);
         }
     }
 
-    private void appendCells(StringBuilder prettyGridBuilder, int rowIndex) {
+    private void appendCells(StringBuilder prettyGridBuilder, int rowIndex, boolean useEmoji) {
         prettyGridBuilder.append(" ");
         for (int column = 0; column < COLUMNS_NUMBER; column++) {
-            prettyGridBuilder.append(printCell(rowIndex, column)).append(" ");
+            prettyGridBuilder.append(printCell(rowIndex, column, useEmoji)).append(" ");
         }
         prettyGridBuilder.append("\n");
     }
 
-    private char printCell(int rowIndex, int column) {
+    private String printCell(int rowIndex, int column, boolean useEmoji) {
         CellState cellState = get(column, rowIndex);
-        return cellState.print();
+        return useEmoji ? cellState.printEmoji() : "" + cellState.print();
     }
 
     private boolean isEmpty(int columnIndex, int rowIndex) {
